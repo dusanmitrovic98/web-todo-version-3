@@ -168,3 +168,4 @@
                     const li = document.createElement("li");
                     li.innerHTML = `<span><button class="complete-button" onclick="completeTask(this)">✓</button> <span class="task">${task.text}</span></span><button onclick="removeTask(this)">Delete</button>`;
                     if (task.completed) {
+                        li.classList.add("completed");
