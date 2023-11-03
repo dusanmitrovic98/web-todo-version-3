@@ -144,3 +144,4 @@
         function exportTasks() {
             const tasks = [];
             document.querySelectorAll(".task").forEach((task) => {
+                const completed = task.parentElement.parentElement.classList.contains("completed");
