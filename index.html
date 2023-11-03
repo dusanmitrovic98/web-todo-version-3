@@ -165,3 +165,4 @@
             reader.onload = (e) => {
                 const tasks = JSON.parse(e.target.result);
                 for (const task of tasks) {
+                    const li = document.createElement("li");
