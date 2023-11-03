@@ -137,3 +137,4 @@
         function clearTasks() {
             const taskList = document.getElementById("taskList");
             while (taskList.firstChild) {
+                taskList.removeChild(taskList.firstChild);
