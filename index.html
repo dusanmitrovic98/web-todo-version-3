@@ -120,3 +120,4 @@
                 const li = document.createElement("li");
                 li.innerHTML = `<span><button class="complete-button" onclick="completeTask(this)">✓</button> <span class="task">${taskText}</span></span><button onclick="removeTask(this)">Delete</button>`;
                 taskList.appendChild(li);
+                document.getElementById("task").value = "";
