@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
     <style>
-        /* Dark Mode Aesthetic */
+        /* Dark Mode & Typography Optimization */
         :root {
             --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --font-stack: 'Playfair Display', serif;
+            --text-color: #eaeaea;
+            --font-stack: 'Lora', serif;
         }
         
         * {
@@ -18,26 +18,28 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            height: 100%;
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: var(--font-stack);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             text-align: center;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         h1 {
-            font-size: 4rem;
-            font-weight: 500;
-            letter-spacing: 1px;
+            font-size: clamp(2rem, 6vw, 5rem); /* Scales perfectly across devices */
+            font-weight: 400;
             font-style: italic;
-            text-transform: none;
-            opacity: 0.9;
+            opacity: 0.95;
+            text-rendering: optimizeLegibility;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,400&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Hello World!</h1>
