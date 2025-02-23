@@ -1,187 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
- 
-<head>
-    <title>To-Do List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #1a1a1a;
-            color: #fff;
-        }
-
-        #app {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            color: #61bd4f;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            background-color: #2a2a2a;
-            color: #fff;
-            border-radius: 5px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            width: 100%;
-        }
-
-        li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #2a2a2a;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-
-        li span {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        li button {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            margin-left: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .task {
-            color: #ccc;
-            margin-left: 10px;
-        }
-
-        .add-button {
-            background: #61bd4f;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .complete-button {
-            background: #61bd4f;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .completed {
-            background: #61bd4f;
-        }
-
-        .import-button {
-            background: #61bd4f;
-            color: white;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="app">
-        <h1>To-Do List</h1>
-        <input type="text" id="task" placeholder="Enter a new task" onkeydown="if(event.key === 'Enter') addTask()">
-        <button class="add-button" onclick="addTask()">Add (Enter)</button>
-        <button class="add-button" onclick="exportTasks()">Export</button>
-        <label for="import" class="add-button import-button">Import</label>
-        <input type="file" id="import" style="display: none" accept=".json">
-        <button class="add-button" onclick="clearTasks()">Clear All</button>
-        <ul id="taskList">
-        </ul>
-    </div>
-    <script>
-        const taskList = document.getElementById("taskList");
-
-        function addTask() {
-            const taskText = document.getElementById("task").value;
-            if (taskText) {
-                const li = document.createElement("li");
-                li.innerHTML = `<span><button class="complete-button" onclick="completeTask(this)">✓</button> <span class="task">${taskText}</span></span><button onclick="removeTask(this)">Delete</button>`;
-                taskList.appendChild(li);
-                document.getElementById("task").value = "";
-            }
-        }
-
-        function removeTask(button) {
-            const listItem = button.parentNode;
-            taskList.removeChild(listItem);
-        }
-
-        function completeTask(button) {
-            const listItem = button.parentNode.parentNode;
-            listItem.classList.toggle("completed");
-        }
-
-        function clearTasks() {
-            const taskList = document.getElementById("taskList");
-            while (taskList.firstChild) {
-                taskList.removeChild(taskList.firstChild);
-            }
-        }
-
-        function exportTasks() {
-            const tasks = [];
-            document.querySelectorAll(".task").forEach((task) => {
-                const completed = task.parentElement.parentElement.classList.contains("completed");
-                tasks.push({ text: task.textContent, completed });
-            });
-
-            const json = JSON.stringify(tasks, null, 2);
-            const blob = new Blob([json], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'tasks.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        document.getElementById("import").addEventListener("change", (event) => {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = (e) => {
-                const tasks = JSON.parse(e.target.result);
-                for (const task of tasks) {
-                    const li = document.createElement("li");
-                    li.innerHTML = `<span><button class="complete-button" onclick="completeTask(this)">✓</button> <span class="task">${task.text}</span></span><button onclick="removeTask(this)">Delete</button>`;
-                    if (task.completed) {
-                        li.classList.add("completed");
-                    }
-                    taskList.appendChild(li);
-                }
-            };
-
-            reader.readAsText(file);
-        });
-    </script>
-</body>
-
-</html>
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -189,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
     <style>
-        /* Dark Mode Flat UI Styling */
+        /* Dark Mode Aesthetic */
         :root {
-            --bg-color: #121212;
-            --text-color: #ffffff;
-            --font-stack: 'Inter', sans-serif;
+            --bg-color: #0d0d0d;
+            --text-color: #f5f5f5;
+            --accent-color: #ffcc00;
+            --font-stack: 'Poppins', 'Helvetica Neue', sans-serif;
         }
         
         * {
@@ -214,15 +31,24 @@
         }
 
         h1 {
-            font-size: 3rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease-in-out;
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--text-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 15px rgba(255, 204, 0, 0.3);
+            animation: glow 1.5s infinite alternate;
         }
 
-        h1:hover {
-            transform: scale(1.05);
+        @keyframes glow {
+            from {
+                text-shadow: 2px 2px 10px rgba(255, 204, 0, 0.5);
+            }
+            to {
+                text-shadow: 2px 2px 20px rgba(255, 204, 0, 0.9);
+            }
         }
     </style>
 </head>
