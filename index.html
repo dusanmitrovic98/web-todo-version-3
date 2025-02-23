@@ -1,47 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>To-Do List</title>
     <style>
-        /* Dark Mode & Typography Optimization */
-        :root {
-            --bg-color: #121212;
-            --text-color: #eaeaea;
-            --font-stack: 'Lora', serif;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1a1a1a;
+            color: #fff;
         }
 
-        html, body {
-            height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-stack);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        #app {
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         h1 {
-            font-size: clamp(2rem, 6vw, 5rem); /* Scales perfectly across devices */
-            font-weight: 400;
-            font-style: italic;
-            opacity: 0.95;
-            text-rendering: optimizeLegibility;
+            color: #61bd4f;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background-color: #2a2a2a;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2a2a2a;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        li span {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        li button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .task {
+            color: #ccc;
+            margin-left: 10px;
+        }
+
+        .add-button {
+            background: #61bd4f;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .complete-button {
+            background: #61bd4f;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .completed {
+            background: #61bd4f;
+        }
+
+        .import-button {
+            background: #61bd4f;
+            color: white;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,400&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <h1>Hello World!</h1>
+    <div id="app">
+        <h1>To-Do List</h1>
+        <input type="text" id="task" placeholder="Enter a new task" onkeydown="if(event.key === 'Enter') addTask()">
+        <button class="add-button" onclick="addTask()">Add (Enter)</button>
+        <button class="add-button" onclick="exportTasks()">Export</button>
+        <label for="import" class="add-button import-button">Import</label>
+        <input type="file" id="import" style="display: none" accept=".json">
+        <button class="add-button" onclick="clearTasks()">Clear All</button>
+        <ul id="taskList">
+        </ul>
+    </div>
+    <script>
+        const taskList = document.getElementById("taskList");
+
+        function addTask() {
+            const taskText = document.getElementById("task").value;
+            if (taskText) {
+                const li = document.createElement("li");
+                li.innerHTML = `<span><button class="complete-button" onclick="completeTask(this)">✓</button> <span class="task">${taskText}</span></span><button onclick="removeTask(this)">Delete</button>`;
+                taskList.appendChild(li);
+                document.getElementById("task").value = "";
+            }
+        }
+
+        function removeTask(button) {
+            const listItem = button.parentNode;
+            taskList.removeChild(listItem);
+        }
+
+        function completeTask(button) {
+            const listItem = button.parentNode.parentNode;
+            listItem.classList.toggle("completed");
+        }
+
+        function clearTasks() {
+            const taskList = document.getElementById("taskList");
+            while (taskList.firstChild) {
+                taskList.removeChild(taskList.firstChild);
+            }
+        }
+
+        function exportTasks() {
+            const tasks = [];
+            document.querySelectorAll(".task").forEach((task) => {
+                const completed = task.parentElement.parentElement.classList.contains("completed");
+                tasks.push({ text: task.textContent, completed });
+            });
+
+            const json = JSON.stringify(tasks, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tasks.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        document.getElementById("import").addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const tasks = JSON.parse(e.target.result);
+                for (const task of tasks) {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<span><button class="complete-button" onclick="completeTask(this)">✓</button> <span class="task">${task.text}</span></span><button onclick="removeTask(this)">Delete</button>`;
+                    if (task.completed) {
+                        li.classList.add("completed");
+                    }
+                    taskList.appendChild(li);
+                }
+            };
+
+            reader.readAsText(file);
+        });
+    </script>
 </body>
+
 </html>
